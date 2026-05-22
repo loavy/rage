@@ -6,153 +6,246 @@
     <title>Sunny Room Games</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-corruption="0">
+    <!-- mirror note: the cute layer loads first because people trust bright colors. -->
+    <!-- if someone asks, this is only a games site. if someone stays, tell them less slowly. -->
     <div class="page-static" aria-hidden="true"></div>
+    <div class="idle-words" id="idleWords" aria-hidden="true"></div>
 
     <header class="site-header">
-      <button class="mascot" id="mascotButton" aria-label="Sunny Room mascot">
-        <span class="mascot-face">:)</span>
+      <button class="mascot" id="mascotButton" aria-label="Sunny Room mascot" data-fragment-trigger="mascot">
+        <span class="mascot-face" id="mascotFace">:)</span>
       </button>
-      <div>
+      <div class="brand-copy">
+        <p class="eyebrow">archive mirror / totally normal</p>
         <h1>Sunny Room Games</h1>
         <p>
-          tiny browser games for lunch breaks, quiet nights, and friends who
-          stay online too late
+          tiny browser games for lunch breaks, quiet nights, and friends who stay online too late
         </p>
       </div>
       <button class="login-button" id="loginButton">Login</button>
     </header>
 
     <nav class="link-bar" aria-label="Site links">
-      <button data-open-page="home">Home</button>
-      <button data-open-page="games">Games</button>
-      <button data-open-page="news">News</button>
-      <button data-open-page="guestbook">Guestbook</button>
+      <button data-jump="games">Games</button>
+      <button data-jump="patch">Patch notes</button>
+      <button data-jump="guestbook">Guestbook</button>
+      <button data-jump="lost">Lost files</button>
+      <button data-jump="faq">FAQ</button>
+      <button data-jump="bug">Bug report</button>
     </nav>
 
     <main class="layout">
-      <section class="notice" aria-label="Welcome">
-        <h2>Hey there!</h2>
-        <p>
-          We are rebuilding a small collection of old Flash-style games made by
-          one guy and his friends. This site is just for fun, updates,
-          screenshots, and silly notes about life after school.
-        </p>
-        <p id="normalLine">
-          Everything is normal here. The buttons work. The games are cute. The
-          creator is doing
-          <span class="quiet-word" data-fragment="1">fine</span>.
-        </p>
+      <section class="notice" aria-labelledby="welcome-title">
+        <div>
+          <h2 id="welcome-title">Hey there!</h2>
+          <p>
+            We are rebuilding a small collection of Flash-style games made by one guy and his friends.
+            This site is just for fun, screenshots, patch notes, and silly little posts after school.
+          </p>
+          <p id="normalLine">
+            Everything is normal here. The buttons work. The games are cute. The creator is doing
+            <button class="secret-word" data-fragment="fine">fine</button>.
+          </p>
+        </div>
+        <aside class="status-box" aria-label="Archive status">
+          <span>mirror health</span>
+          <strong id="mirrorHealth">stable</strong>
+          <span class="fragment-meter" id="fragmentMeter">0 recovered</span>
+        </aside>
       </section>
 
-      <section class="games-grid" aria-label="Game list">
-        <article class="game-card">
-          <div class="game-art park"></div>
+      <section class="games-grid" id="games" aria-label="Game list">
+        <article class="game-card" data-game-card="picnic">
+          <div class="game-art park" aria-hidden="true"></div>
           <h3>Picnic Panic</h3>
-          <p>Catch sandwiches before the wind gets them.</p>
-          <button>Play</button>
+          <p>
+            Catch sandwiches before the <button class="secret-word" data-fragment="wind">wind</button> gets them.
+          </p>
+          <button class="play-button" data-game="picnic">Play</button>
         </article>
-        <article class="game-card">
-          <div class="game-art phone"></div>
+
+        <article class="game-card" data-game-card="message">
+          <div class="game-art phone" aria-hidden="true"></div>
           <h3>Message Hero</h3>
           <p>
             Reply fast enough and everyone
-            <span class="quiet-word" data-fragment="2">believes</span> you.
+            <button class="secret-word" data-fragment="believes">believes</button> you.
           </p>
-          <button>Play</button>
+          <button class="play-button" data-game="message">Play</button>
         </article>
-        <article class="game-card">
-          <div class="game-art room"></div>
+
+        <article class="game-card" data-game-card="clean">
+          <div class="game-art room" aria-hidden="true"></div>
           <h3>Clean Room Rush</h3>
           <p>
-            Hide the
-            <span class="quiet-word" data-fragment="3">mess</span> before your
-            friends arrive.
+            Hide the <button class="secret-word" data-fragment="mess">mess</button> before your friends arrive.
           </p>
-          <button>Play</button>
+          <button class="play-button" data-game="clean">Play</button>
         </article>
-        <article class="game-card locked-card" id="lockedGame">
-          <div class="game-art door"></div>
+
+        <article class="game-card locked-card" data-game-card="meaning">
+          <div class="game-art door" aria-hidden="true"></div>
           <h3>The Meaning Machine</h3>
-          <p>Coming soon! It keeps crashing at the final question.</p>
-          <button>Wishlist</button>
+          <p>
+            Coming soon. It keeps crashing at the
+            <button class="secret-word" data-fragment="question">final question</button>.
+          </p>
+          <button class="play-button" data-game="meaning" id="meaningButton">Wishlist</button>
         </article>
       </section>
 
-      <section class="posts" aria-label="Updates">
-        <article class="post">
+      <section class="content-grid" id="patch" aria-label="Patch notes and news">
+        <article class="post wide">
+          <p class="post-meta">patch notes / build 0.8.8</p>
           <h2>New games and a tiny delay!</h2>
           <p>
-            The next release needs more polish, more colors, and maybe a better
-            ending. Thanks to everyone who asked how I am. I always answer the
-            same way because it is
-            <span class="quiet-word" data-fragment="4">easy</span>. One friend
-            keeps saying <span class="soft-hint">vai passar</span>, like words
-            can unlock a room from the inside.
+            The next release needs more polish, more colors, and maybe a better ending.
+            Thanks to everyone who asked how I am. I always answer the same way because it is
+            <button class="secret-word" data-fragment="easy">easy</button>.
+            One friend keeps saying <button class="secret-word" data-fragment="passar">vai passar</button>,
+            like words can unlock a room from the inside.
           </p>
-          <button class="read-more">Read more</button>
+          <button class="read-more" data-fragment="patch-delay">Read more</button>
         </article>
 
-        <article class="post odd-post" id="friendsPost">
+        <article class="post" id="guestbook">
+          <p class="post-meta">guestbook winners</p>
           <h2>Friend contest winners announcement</h2>
           <p>
-            Big thanks to everybody who sent jokes, plans, screenshots, and
-            voice notes. The winning entry is whoever
-            <span class="quiet-word" data-fragment="6">noticed</span>
+            Big thanks to everybody who sent jokes, plans, screenshots, and voice notes.
+            The winning entry is whoever
+            <button class="secret-word" data-fragment="noticed">noticed</button>
             I was lying before I did.
           </p>
-          <ul>
+          <ul class="score-list">
             <li>best laugh: tom</li>
             <li>best listener: ana</li>
             <li>best excuse: "sorry, I fell asleep"</li>
-            <li>best disappearing act: me</li>
+            <li>best disappearing act: <button class="secret-word" data-fragment="disappearing">me</button></li>
           </ul>
         </article>
 
         <article class="post">
+          <p class="post-meta">store mirrors</p>
           <h2>Where to play?</h2>
           <p>
-            The games are available right here. If a page looks broken, refresh
-            it. If a sentence looks too honest,
-            <span class="quiet-word" data-fragment="5">pretend</span>
+            The games are available right here. If a page looks broken, refresh it.
+            If a sentence looks too honest,
+            <button class="secret-word" data-fragment="pretend">pretend</button>
             you did not see it.
           </p>
           <div class="footer-links">
-            <button>Steam</button>
-            <button>Itch</button>
-            <button id="sourceButton">Source</button>
+            <button data-store="steam">Steam</button>
+            <button data-store="itch">Itch</button>
+            <button id="sourceButton" data-fragment-trigger="source">Source</button>
           </div>
         </article>
       </section>
 
-      <section class="posts extra-posts" aria-label="Archived notes">
-        <article class="post">
+      <section class="content-grid" id="lost" aria-label="Lost files">
+        <article class="post wide lost-file">
+          <p class="post-meta">lost files / recovered thumbnails</p>
           <h2>Screenshot pack recovered</h2>
           <p>
-            We found old menu art, a broken school level, and one image that
-            refuses to load unless the filename is typed exactly right.
+            We found old menu art, a broken school level, and one image that refuses to load
+            unless the filename is typed exactly right. The room saves what the
+            <button class="secret-word" data-fragment="mouth">mouth</button> deletes.
+          </p>
+          <div class="thumbnail-row" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </article>
+
+        <article class="post">
+          <p class="post-meta">lost file 02</p>
+          <h2>room_bug_final_final.txt</h2>
+          <p>
+            The bedroom keeps appearing in every game even when no bedroom assets are imported.
+            QA says this is not a bug, only a
+            <button class="secret-word" data-fragment="room">room</button> with rules.
           </p>
         </article>
+
         <article class="post">
+          <p class="post-meta">moderation queue</p>
           <h2>Guestbook moderation</h2>
           <p>
-            A few messages were removed because they sounded too personal for a
-            games page. The archive keeps everything anyway.
+            A few messages were removed because they sounded too personal for a games page.
+            The archive keeps
+            <button class="secret-word" data-fragment="everything">everything</button>
+            anyway.
           </p>
         </article>
       </section>
+
+      <section class="content-grid" id="faq" aria-label="FAQ and credits">
+        <article class="post">
+          <p class="post-meta">FAQ</p>
+          <h2>Why do some games fail to load?</h2>
+          <p>
+            Some games are just rooms with rules. If you win, nobody asks why you were
+            <button class="secret-word" data-fragment="playing">playing</button>.
+          </p>
+        </article>
+        <article class="post">
+          <p class="post-meta">FAQ</p>
+          <h2>Who made the mascot?</h2>
+          <p>
+            The mascot smiles because
+            <button class="secret-word" data-fragment="smiles">I forgot how</button>.
+            Please do not send redesign suggestions.
+          </p>
+        </article>
+        <article class="post">
+          <p class="post-meta">credits</p>
+          <h2>Credits</h2>
+          <p>
+            Code, art, excuses, fake patch notes, and most of the silence by one person.
+            Friends credited for staying in the server longer than the
+            <button class="secret-word" data-fragment="silence">silence</button>.
+          </p>
+        </article>
+      </section>
+
+      <section class="bug-report" id="bug" aria-labelledby="bug-title">
+        <div>
+          <p class="post-meta">bug report</p>
+          <h2 id="bug-title">Report a problem</h2>
+          <p>
+            Please describe the bug without describing yourself. Attach screenshots only if the room appears.
+          </p>
+        </div>
+        <form id="bugForm">
+          <label for="bugText">What broke?</label>
+          <textarea id="bugText" rows="4" placeholder="the game loads, but I don't"></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </section>
     </main>
+
+    <aside class="memory-dock" aria-live="polite">
+      <button class="dock-tab" id="memoryTab" aria-expanded="false">memory</button>
+      <span id="fragmentCounter">0/12</span>
+    </aside>
 
     <footer class="site-footer">
       <span>Sunny Room Games archive mirror</span>
-      <span id="archiveDust" aria-label="Archive mirror">2008</span>
+      <button class="dust-button" id="archiveDust" aria-label="archive mirror 2008">2008</button>
+      <button class="reset-memory" id="resetMemory">reset memory</button>
     </footer>
 
+    <dialog class="game-dialog" id="gameDialog">
+      <button class="close-dialog" id="closeGame" aria-label="Close">x</button>
+      <p class="crumb" id="gameCrumb">loading</p>
+      <h2 id="gameTitle">Untitled</h2>
+      <div class="fake-screen" id="gameScreen"></div>
+      <p class="game-response" id="gameResponse" aria-live="polite"></p>
+    </dialog>
+
     <dialog class="secret-dialog" id="secretDialog">
-      <button class="close-dialog" id="closeDialog" aria-label="Close">
-        x
-      </button>
-      <p class="crumb">recovered file</p>
+      <button class="close-dialog" id="closeDialog" aria-label="Close">x</button>
+      <p class="crumb" id="secretTheme">recovered file</p>
       <h2 id="secretTitle">Untitled</h2>
       <p id="secretText"></p>
     </dialog>
@@ -171,6 +264,30 @@
       <p class="login-response" id="loginResponse" aria-live="polite"></p>
     </dialog>
 
+    <section class="secret-panel" id="secretPanel" aria-labelledby="panelTitle" hidden>
+      <div class="panel-shell">
+        <button class="close-dialog" id="closePanel" aria-label="Close">x</button>
+        <p class="crumb">assembled from fragments</p>
+        <h2 id="panelTitle">the room underneath</h2>
+        <div class="assembled-poem" id="assembledPoem"></div>
+        <div class="final-room" id="finalRoom" hidden>
+          <h3>the room underneath</h3>
+          <p>
+            I learned to sound alive before I learned to be honest.
+            I made games because games forgive rules that people do not.
+            The mascot smiled for me, the patch notes talked for me, the room kept every word I deleted.
+          </p>
+          <p>
+            I am tired. I am confused. I do not know if meaning is found, built, borrowed, or waited for.
+            But tonight the door is not locked from the outside. Maybe I can let one person see the room.
+            Maybe staying one more day is not a victory screen. Maybe it is enough light to save the file.
+          </p>
+          <a class="protected-link" href="protected/room-log.html">open room-log</a>
+        </div>
+      </div>
+    </section>
+
+    <script src="fragments.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

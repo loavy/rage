@@ -251,6 +251,7 @@ ainda podem ser encontrados.`;
           <a class="protected-link" href="oldsave.php">oldsave</a>
           <a class="protected-link" href="mirror.php">mirror</a>
           <a class="protected-link" href="notes.php">notes</a>
+          <a class="protected-link" href="room-log.html">room-log</a>
         `;
         poem.appendChild(links);
         document.body.classList.remove("arranging");
