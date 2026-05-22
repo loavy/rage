@@ -1,47 +1,55 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The Room Witness</title>
-    <link rel="stylesheet" href="../styles.css" />
-  </head>
-  <body class="subsite room-site" data-corruption="3">
-    <main class="subsite-shell">
-      <header class="subsite-header">
-        <p class="eyebrow">room customizer beta</p>
-        <h1>the room witness</h1>
-        <p>drag nothing. rearrange nothing. the room remembers anyway.</p>
-      </header>
-      <section class="room-map">
-        <button data-room-note="chair">chair facing the wrong way</button>
-        <button data-room-note="mirror">mirror refusing the face</button>
-        <button data-room-note="drawer">locked drawer</button>
-        <button data-room-note="window">window with no outside</button>
-      </section>
-      <p class="room-output" id="roomOutput">the room does not know you, but it recognizes looking.</p>
-      <p><a class="protected-link false-exit" href="../login.html">Back</a></p>
-    </main>
-    <script>
-      const output = document.querySelector("#roomOutput");
-      document.querySelectorAll("[data-room-note]").forEach((button) => {
-        button.addEventListener("click", () => {
-          const notes = {
-            chair: "the chair kept the shape of someone trying to become small.",
-            mirror: "the body kept the lights on after I left.",
-            drawer: "do not show the wound. show the room built around it.",
-            window: "outside looked fake because inside had become too real."
-          };
-          output.textContent = notes[button.dataset.roomNote];
-        });
-      });
-      document.querySelector(".false-exit").addEventListener("click", (event) => {
-        if (!sessionStorage.getItem("room_false_exit")) {
-          event.preventDefault();
-          sessionStorage.setItem("room_false_exit", "true");
-          output.textContent = "Back -> Again. the room lets you rehearse leaving first.";
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Room</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/horror.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">SR</span><span>Room Customizer</span></a>
+    <nav class="nav-links" aria-label="main"><a href="../login.html">login</a><a href="mirror.html">mirror</a><a href="../index.html">home</a></nav>
+  </header>
+  <main class="page-shell">
+    <section class="page-card">
+      <h1>The Room Is The Witness</h1>
+      <p>Click furniture to customize. The door is not an exit. The room saves what the mouth deletes.</p>
+      <div class="room-plan">
+        <button class="room-object object-wide" data-room-line="the bed kept the shape of a person who was technically there." data-fragment-id="f18">bed</button>
+        <button class="room-object" data-room-line="the desk still has an unsent sentence warming under the dust." data-fragment-id="f19">desk</button>
+        <button class="room-object" data-room-line="the drawer refuses to open until you stop calling it storage.">drawer</button>
+        <a class="room-object button-link" href="mirror.html" data-fragment-id="f21">mirror</a>
+        <button class="room-object object-tall" data-room-line="outside kept happening without asking if he could keep up." data-fragment-id="f20">window</button>
+        <button class="room-object" data-room-line="the chair faced the door for months, practicing an exit.">chair</button>
+        <button class="room-object" data-room-line="the floor learned every weight except relief.">floor</button>
+        <button class="room-object" data-room-line="the ceiling was the only sky that did not move away.">ceiling</button>
+        <a class="room-object button-link object-wide" href="old-save.html">old computer</a>
+      </div>
+      <div class="room-memory" data-room-memory aria-live="polite">the room is waiting for you to touch an object gently.</div>
+      <p class="small">If this page looks locked, it is because the lock learned your posture.</p>
+    </section>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <!-- the room remembers the date, but the boy does not -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/fragments.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    RageFragments.recover("f05");
+    document.querySelectorAll("[data-room-line]").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.classList.add("is-awake");
+        document.querySelector("[data-room-memory]").textContent = button.dataset.roomLine;
+        if (document.querySelectorAll(".room-object.is-awake").length >= 5) {
+          RageStore.unlockCode("THELOCK");
+          RageUI.speakFromSite("the room accepted the lock because the lock was tired too.");
         }
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>

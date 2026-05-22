@@ -1,26 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>there is no bottom element</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body class="void-page" data-corruption="5">
-    <main class="void-descent standalone">
-      <h1>the void underneath</h1>
-      <p>i thought the bottom would explain the fall</p>
-      <p>i thought the bottom would forgive the fall</p>
-      <p>i thought the bottom would become a floor</p>
-      <p>there was no bottom</p>
-      <p>there was only more falling</p>
-      <p>the page kept making more down</p>
-      <p>the body kept the lights on after i left</p>
-      <p>somewhere above me, a message arrived and waited</p>
-      <p><a class="protected-link" href="login.html">Back</a></p>
-    </main>
-    <script>
-      localStorage.setItem("rage_reached_void", "true");
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bottomless Runner</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/horror.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="void-page">
+  <div class="void-hud">
+    seconds not gone: <strong data-seconds-not-gone>0</strong><br>
+    <span data-depth>0 px below mask</span><br>
+    <a href="index.html">surface</a> / <a href="protected/bottom.html">word bottom</a>
+  </div>
+  <main class="fall-column">
+    <div class="depth-line"><strong>i thought the bottom would explain the fall</strong></div>
+    <div class="depth-line">at first it felt like a place. then it felt like weather. then it felt like my name being called from too far away.</div>
+    <div class="depth-line"><strong>i thought the bottom would forgive the fall</strong></div>
+    <div class="depth-line">nobody saw the falling, so I learned to report only the landing.</div>
+    <div class="depth-line"><strong>i thought the bottom would become a floor</strong></div>
+    <div class="depth-line">but a word is not a floor. a score is not a life. a body is not proof the person is home.</div>
+    <div class="depth-line"><strong>there was no bottom</strong></div>
+    <div class="depth-line">there was only more falling, and the strange humiliation of surviving it.</div>
+    <div class="depth-line"><button data-fragment-id="f25">NO BOTTOM</button></div>
+    <div class="depth-line"><a class="button-link" href="protected/bottom.html">keep falling</a></div>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <script src="js/storage.js"></script>
+  <script src="js/fragments.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/void.js"></script>
+</body>
 </html>

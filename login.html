@@ -1,145 +1,46 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Account Recovery</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body class="login-page" data-corruption="3">
-    <!-- the login form is not security. it is a confession box with labels. -->
-    <main class="login-shell" aria-labelledby="loginTitle">
-      <section class="login-card">
-        <p class="eyebrow">Sunny Room Games / account recovery</p>
-        <h1 id="loginTitle">Member Login</h1>
-        <p id="loginMemory">this account was never yours</p>
-
-        <form id="gatewayForm">
-          <label for="usernameInput">username</label>
-          <input id="usernameInput" name="username" autocomplete="nickname" placeholder="guest" />
-
-          <label for="codeInput">password / access code</label>
-          <input id="codeInput" name="code" autocomplete="off" placeholder="SUNNY" />
-
-          <label class="check-row">
-            <input id="rememberInput" type="checkbox" />
-            <span>remember me</span>
-          </label>
-
-          <div class="login-actions">
-            <button type="submit">login</button>
-            <button type="button" id="guestLogin">login as guest</button>
-          </div>
-        </form>
-
-        <button class="forgot-link" id="forgotPassword">forgot password?</button>
-        <p class="login-response" id="gatewayResponse" aria-live="polite"></p>
-
-        <section class="access-list" aria-labelledby="accessTitle">
-          <h2 id="accessTitle">access levels</h2>
-          <div id="accessLevels"></div>
-        </section>
-
-        <p class="login-foot">
-          <a class="protected-link" href="index.html">Back</a>
-        </p>
-      </section>
-    </main>
-
-    <script src="fragments.js"></script>
-    <script src="routes.js"></script>
-    <script>
-      const routes = window.RAGE_ROUTES || {};
-      const routeList = Object.values(routes);
-      const found = new Set(JSON.parse(localStorage.getItem("rage_fragments_found") || localStorage.getItem("sunnyRoom.fragments.v2") || "[]"));
-      const unlocked = new Set(JSON.parse(localStorage.getItem("rage_unlocked_codes") || "[]"));
-      const attemptsKey = "rage_login_attempts";
-      const response = document.querySelector("#gatewayResponse");
-      const username = document.querySelector("#usernameInput");
-      const codeInput = document.querySelector("#codeInput");
-      const accessLevels = document.querySelector("#accessLevels");
-      const savedName = localStorage.getItem("rage_user_name");
-      const returnCount = Number(localStorage.getItem("rage_return_count") || "0") + 1;
-
-      localStorage.setItem("rage_return_count", String(returnCount));
-      if (savedName) {
-        username.value = savedName;
-        document.querySelector("#loginMemory").textContent = `${savedName}, you came back.`;
-      } else if (returnCount > 1) {
-        document.querySelector("#loginMemory").textContent = "you came back.";
-      }
-
-      function saveUnlocked() {
-        localStorage.setItem("rage_unlocked_codes", JSON.stringify([...unlocked]));
-      }
-
-      function renderAccess() {
-        accessLevels.innerHTML = routeList.map((route) => {
-          const open = unlocked.has(route.label) || route.minFragments === 0;
-          const href = open ? route.href : "#";
-          const status = open ? "open" : `${route.minFragments} fragments`;
-          return `<a class="${open ? "open" : "locked"}" href="${href}" data-code="${route.label}"><span>${route.label}</span><em>${status}</em></a>`;
-        }).join("");
-      }
-
-      function matchRoute(raw) {
-        const typed = raw.trim().toUpperCase().replace(/\s+/g, "");
-        return routeList.find((route) => route.label === typed || (route.aliases || []).map((alias) => alias.replace(/\s+/g, "")).includes(typed));
-      }
-
-      function fail(raw) {
-        const attempts = Number(localStorage.getItem(attemptsKey) || "0") + 1;
-        localStorage.setItem(attemptsKey, String(attempts));
-        const name = localStorage.getItem("rage_user_name");
-        if (name && raw.trim().toLowerCase() === name.toLowerCase()) {
-          response.textContent = "that name opens nothing yet.";
-          return;
-        }
-        response.textContent = [
-          "invalid password.",
-          "try the word you use when you are lying.",
-          "you typed wrong, but the feeling matched.",
-          "access denied: not deep enough.",
-          "the login form is tired of pretending this is security."
-        ][Math.min(attempts - 1, 4)];
-      }
-
-      document.querySelector("#gatewayForm").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const name = username.value.trim();
-        const rawCode = codeInput.value;
-        if (name) localStorage.setItem("rage_user_name", name);
-        const route = matchRoute(rawCode);
-        if (!route) {
-          fail(rawCode);
-          return;
-        }
-        if (route.label === "VOID" && found.size < route.minFragments) {
-          response.textContent = "you cannot enter the void from the surface.";
-          return;
-        }
-        if (found.size < route.minFragments) {
-          response.textContent = `access denied: ${route.minFragments - found.size} more fragments still under the skin.`;
-          return;
-        }
-        unlocked.add(route.label);
-        saveUnlocked();
-        renderAccess();
-        response.textContent = route.message;
-        window.setTimeout(() => {
-          window.location.href = route.href;
-        }, 900);
-      });
-
-      document.querySelector("#guestLogin").addEventListener("click", () => {
-        response.textContent = "guest mode cannot enter the room.";
-      });
-
-      document.querySelector("#forgotPassword").addEventListener("click", () => {
-        response.textContent = "hint: codes are not passwords. they are words the site could not digest.";
-      });
-
-      renderAccess();
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sunny Room Games Account Recovery</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/horror.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">SR</span><span>Account Recovery</span></a>
+    <nav class="nav-links" aria-label="main"><a href="index.html">home</a><a href="void.html">void</a></nav>
+  </header>
+  <main class="page-shell">
+    <section class="page-card">
+      <h1>Sunny Room Games Account Recovery</h1>
+      <p>Enter your username and password/access code. This form is not security. It is a memory asking to be named.</p>
+      <p class="delayed-line" data-delay-text="2400">Every access level is just another way the boy learned to say: I am fine enough to continue.</p>
+      <form data-login-form>
+        <p><label for="username">username</label><br><input id="username" name="username" type="text" autocomplete="username"></p>
+        <p><label for="password">password / access code</label><br><input id="password" name="password" type="password" autocomplete="off"></p>
+        <p><label><input name="remember" type="checkbox"> remember me</label></p>
+        <button type="submit">login</button>
+        <button type="button" class="ghost-button" data-guest>guest</button>
+        <p><a href="#" data-forgot>forgot password?</a></p>
+      </form>
+      <p class="wrong-text" data-login-message aria-live="polite">waiting for a word that feels like a door.</p>
+    </section>
+    <section class="page-card">
+      <h2>Access Levels</h2>
+      <p class="small">SUNNY, FINE, ROOM, ORGANIC, MOUTH, VOID, BOTTOM, STILLHERE, THELOCK, UNDERNEATH</p>
+      <p>Some codes need fragments. The lock is not checking who you are. It is checking how far the page has admitted itself.</p>
+      <p class="small">wrong password, correct feeling.</p>
+    </section>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <!-- if they find this, maybe they were listening -->
+  <script src="js/storage.js"></script>
+  <script src="js/fragments.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/login.js"></script>
+</body>
 </html>

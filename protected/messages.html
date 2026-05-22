@@ -1,83 +1,87 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Message Hero Archive</title>
-    <link rel="stylesheet" href="../styles.css" />
-  </head>
-  <body class="subsite messages-site" data-corruption="2">
-    <main class="subsite-shell">
-      <header class="subsite-header">
-        <p class="eyebrow">Message Hero Archive</p>
-        <h1>inbox recovered</h1>
-        <p id="messageMemory">the mask types before the boy does</p>
-      </header>
-
-      <section class="phone-shell" aria-label="Recovered messages">
-        <div class="thread-list">
-          <button data-thread="mom">Mom</button>
-          <button data-thread="friend">Friend</button>
-          <button data-thread="unknown">Unknown</button>
-          <button data-thread="support">Sunny Support</button>
-          <button data-thread="room">The Room</button>
-          <button data-thread="self">Yourself</button>
-        </div>
-        <div class="message-window" id="messageWindow" aria-live="polite"></div>
-        <div class="reply-row">
-          <button data-reply="im fine">im fine</button>
-          <button data-reply="lol">lol</button>
-          <button data-reply="later">later</button>
-          <button data-reply="sorry">sorry</button>
-          <button data-reply="i dont know">i dont know</button>
-          <button data-reply="please notice" id="noticeReply">please notice</button>
-        </div>
-      </section>
-
-      <p><a class="protected-link" href="../login.html">Back</a></p>
-    </main>
-
-    <script>
-      const name = localStorage.getItem("rage_user_name");
-      const found = new Set(JSON.parse(localStorage.getItem("rage_fragments_found") || localStorage.getItem("sunnyRoom.fragments.v2") || "[]"));
-      const unlocked = new Set(JSON.parse(localStorage.getItem("rage_unlocked_codes") || "[]"));
-      const threads = {
-        mom: ["Did you eat?", "Are you sleeping?", "You said you were fine.", "Why did your message sound copied?"],
-        friend: ["bro you good?", "you disappeared yesterday", "nvm you probably busy", "haha same", "wait", "why did I believe you?"],
-        unknown: ["do not answer too fast", "the mask types before the boy does", "some replies are rooms with locks"],
-        support: ["Ticket #000: user reports being normal.", "Resolution: marked as fixed by mistake.", "Escalation code: FINE."],
-        room: ["I heard the message before you sent it.", "The walls do not need notifications.", "Code hint: ROOM."],
-        self: ["delete this", "say lol", "say later", "say sorry", "say anything except please notice"]
-      };
-      const windowEl = document.querySelector("#messageWindow");
-      const noticeReply = document.querySelector("#noticeReply");
-
-      if (name) document.querySelector("#messageMemory").textContent = `${name}, do you also answer too fast?`;
-      noticeReply.disabled = found.size < 10;
-
-      function render(thread) {
-        windowEl.innerHTML = threads[thread].map((line, index) => `<p class="${index % 2 ? "them" : "me"}">${line}</p>`).join("");
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Messages - Sunny Room Games</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/horror.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">SR</span><span>Messages</span></a>
+    <nav class="nav-links" aria-label="main"><a href="../login.html">login</a><a href="../index.html">home</a></nav>
+  </header>
+  <main class="page-shell">
+    <section class="page-card">
+      <h1>Message Hero Inbox</h1>
+      <p class="small">The phone looks normal because phones are excellent masks.</p>
+      <div class="chat-shell">
+        <aside class="contact-list" aria-label="contacts">
+          <button data-contact="mom">Mom</button>
+          <button data-contact="friend" data-fragment-id="f08">Friend</button>
+          <button data-contact="unknown">Unknown</button>
+          <button data-contact="support" data-fragment-id="f12">Sunny Room Games Support</button>
+          <button data-contact="room">The Room</button>
+          <button data-contact="yourself">Yourself</button>
+        </aside>
+        <section class="message-pane" aria-live="polite">
+          <div data-messages></div>
+          <p class="typing" data-typing>Mom is typing...</p>
+          <div class="reply-row">
+            <button data-reply="im fine">im fine</button>
+            <button data-reply="lol">lol</button>
+            <button data-reply="later">later</button>
+            <button data-reply="sorry">sorry</button>
+            <button data-reply="i dont know">i dont know</button>
+            <button data-reply="please notice">please notice</button>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <script src="../js/storage.js"></script>
+  <script src="../js/fragments.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    const threads = {
+      mom: ["did you eat?", "are you sleeping?", "you said you were fine.", "why did your message sound copied?", "I keep reading it again and it keeps not sounding like you"],
+      friend: ["bro you good?", "you disappeared yesterday", "nvm you probably busy", "haha same", "wait", "why did I believe you?", "you made okay sound so easy"],
+      unknown: ["do not answer too fast", "the mask types before the boy does", "some replies are sealed rooms with emojis", "the first honest reply will feel late"],
+      support: ["thank you for contacting support", "we cannot restore deleted childhoods", "please describe the bug without becoming it"],
+      room: ["you left words under the bed", "I kept them", "do you want them back?", "I can return them slowly"],
+      yourself: ["do not send this", "do not send this", "please notice", "please notice before I become easy to miss"]
+    };
+    const pane = document.querySelector("[data-messages]");
+    const typing = document.querySelector("[data-typing]");
+    let active = "mom";
+    function render() {
+      pane.innerHTML = threads[active].map((text) => `<p class="bubble them">${text}</p>`).join("");
+      typing.textContent = `${active} is typing...`;
+    }
+    document.querySelectorAll("[data-contact]").forEach((button) => button.addEventListener("click", () => {
+      active = button.dataset.contact;
+      render();
+    }));
+    document.querySelectorAll("[data-reply]").forEach((button) => button.addEventListener("click", () => {
+      const count = RageStore.countFragments();
+      let reply = button.dataset.reply;
+      if (count < 10 && reply !== "im fine") reply = "im fine";
+      if (reply === "im fine") RageStore.flag(RageStore.keys.saidFine);
+      if (reply === "please notice") {
+        RageFragments.recover("f23");
+        pane.insertAdjacentHTML("beforeend", `<p class="bubble system">message not sent. but the room heard it.</p>`);
+        RageStore.unlockCode("STILLHERE");
       }
-
-      document.querySelectorAll("[data-thread]").forEach((button) => {
-        button.addEventListener("click", () => render(button.dataset.thread));
-      });
-
-      document.querySelectorAll("[data-reply]").forEach((button) => {
-        button.addEventListener("click", () => {
-          const reply = button.dataset.reply;
-          if (reply === "please notice" && found.size >= 10) {
-            unlocked.add("MOUTH");
-            localStorage.setItem("rage_unlocked_codes", JSON.stringify([...unlocked]));
-            windowEl.insertAdjacentHTML("beforeend", `<p class="me">please notice</p><p class="them">I am here. I am not asking you to explain yet.</p>`);
-            return;
-          }
-          localStorage.setItem("rage_said_fine", "true");
-          windowEl.insertAdjacentHTML("beforeend", `<p class="me">im fine</p>`);
-        });
-      });
-
-      render("friend");
-    </script>
-  </body>
+      pane.insertAdjacentHTML("beforeend", `<p class="bubble me">${reply}</p>`);
+      if (reply === "im fine") {
+        pane.insertAdjacentHTML("beforeend", `<p class="bubble system">autofill learned this one before you did.</p>`);
+      }
+    }));
+    render();
+  </script>
+</body>
 </html>

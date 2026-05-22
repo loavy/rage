@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mirror</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/horror.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">SR</span><span>Mirror Tool</span></a>
+    <nav class="nav-links" aria-label="main"><a href="room.html">room</a><a href="../login.html">login</a></nav>
+  </header>
+  <main class="mirror-field">
+    <section>
+      <h1>which one came back?</h1>
+      <div class="mirror-name" data-reflection aria-label="mismatched reflections">
+        <span>visitor</span>
+        <span>visitor</span>
+        <span>visitor</span>
+      </div>
+      <p>the mirror does not return the boy correctly.</p>
+      <p class="delayed-line" data-delay-text="3000">one of them learned to smile. one of them learned to vanish. one of them is still waiting for permission to be real.</p>
+      <button data-fragment-id="f21">REFLECTION</button>
+    </section>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <script src="../js/storage.js"></script>
+  <script src="../js/fragments.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    const name = RageStore.getName() || "visitor";
+    document.querySelector("[data-reflection]").innerHTML = `<span>${name}</span><span>${name.split("").reverse().join("")}</span><span>${name.toLowerCase()}?</span>`;
+  </script>
+</body>
+</html>

@@ -1,21 +1,35 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The False Bottom</title>
-    <link rel="stylesheet" href="../styles.css" />
-  </head>
-  <body class="subsite bottom-site" data-corruption="5">
-    <main class="subsite-shell">
-      <h1>THE BOTTOM</h1>
-      <p>this is the answer page.</p>
-      <p>this is not the answer page.</p>
-      <p>i thought the bottom would explain the fall.</p>
-      <p>i thought the bottom would forgive the fall.</p>
-      <p>i thought the bottom would become a floor.</p>
-      <p>there was no bottom.</p>
-      <p><a class="protected-link" href="../void.html">Again</a></p>
-    </main>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bottom</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/horror.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="void-page">
+  <main class="page-shell">
+    <section class="page-card" style="margin-top:20vh">
+      <h1>you found the bottom.</h1>
+      <p data-bottom-line class="section-title">...</p>
+      <p><button data-fragment-id="f10">BOTTOM</button> <button data-fragment-id="f30">WORD BOTTOM</button></p>
+      <p><a class="button-link" href="../underneath.html">UNDERNEATH</a> <a class="button-link ghost-button" href="../index.html">surface</a></p>
+    </section>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <script src="../js/storage.js"></script>
+  <script src="../js/fragments.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    RageStore.flag(RageStore.keys.reachedUnderneath);
+    RageStore.unlockCode("UNDERNEATH");
+    RageFragments.recover("f10");
+    setTimeout(() => {
+      document.querySelector("[data-bottom-line]").textContent = "no. you found the word bottom. that is different.";
+      RageFragments.recover("f30");
+    }, 1800);
+  </script>
+</body>
 </html>

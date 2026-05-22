@@ -1,42 +1,42 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Organic Log</title>
-    <link rel="stylesheet" href="../styles.css" />
-  </head>
-  <body class="subsite body-site" data-corruption="3">
-    <main class="subsite-shell">
-      <header class="subsite-header">
-        <p class="eyebrow">organic status / all values normal</p>
-        <h1>body normalizer</h1>
-        <p>the body reported normal. the boy did not.</p>
-      </header>
-      <section class="sliders" aria-label="Body normalizer">
-        <label>pulse <input type="range" value="50" /></label>
-        <label>breath <input type="range" value="50" /></label>
-        <label>voice <input type="range" value="50" /></label>
-        <label>face <input type="range" value="50" /></label>
-        <label>hunger <input type="range" value="50" /></label>
-        <label>sleep <input type="range" value="50" /></label>
-      </section>
-      <pre class="body-log" id="bodyLog">normal is a costume the body learned.</pre>
-      <p><a class="protected-link" href="../login.html">Back</a></p>
-    </main>
-    <script>
-      const log = document.querySelector("#bodyLog");
-      document.querySelectorAll("input[type='range']").forEach((input) => {
-        input.addEventListener("input", () => {
-          log.textContent = [
-            "the page has a pulse but no heartbeat.",
-            "something under the interface keeps pressing outward.",
-            "my skin learned the shape of silence.",
-            "the screen is not bleeding; it is remembering red.",
-            "pain does not need a picture. it has architecture."
-          ][Math.floor(Math.random() * 5)];
-        });
-      });
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Body Log</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/horror.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="corruption-3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">SR</span><span>Body Normalizer</span></a>
+    <nav class="nav-links" aria-label="main"><a href="../login.html">login</a><a href="../index.html">home</a></nav>
+  </header>
+  <main class="page-shell">
+    <section class="page-card breathing">
+      <h1>Health Status Dashboard</h1>
+      <p>the page has a pulse but no heartbeat. something under the interface keeps pressing outward.</p>
+      <div class="status-grid">
+        <div class="stat"><strong>pulse</strong><span>normal</span></div>
+        <div class="stat"><strong>breath</strong><span>normal</span></div>
+        <div class="stat"><strong>voice</strong><span>normal</span></div>
+        <div class="stat"><strong>face</strong><span>normal</span></div>
+        <div class="stat"><strong>hunger</strong><span>normal</span></div>
+        <div class="stat"><strong>sleep</strong><span>normal</span></div>
+        <button class="stat" data-fragment-id="f22"><strong>presence</strong><span>missing</span></button>
+        <button class="stat" data-fragment-id="f06"><strong>return</strong><span>incomplete</span></button>
+      </div>
+      <p>my skin learned the shape of silence. every button feels like a bruise. pain does not need a picture. it has architecture.</p>
+      <p class="delayed-line" data-delay-text="2600">The body survived before the person could agree to be found.</p>
+      <p class="delayed-line" data-delay-text="5200">That is why normal feels insulting. It is accurate and it is not enough.</p>
+      <button data-fragment-id="f04">HEALTH</button>
+    </section>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <script src="../js/storage.js"></script>
+  <script src="../js/fragments.js"></script>
+  <script src="../js/main.js"></script>
+</body>
 </html>

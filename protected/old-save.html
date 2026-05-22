@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Old Save</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/horror.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">SR</span><span>Old Save File</span></a>
+    <nav class="nav-links" aria-label="main"><a href="room.html">room</a><a href="../login.html">login</a></nav>
+  </header>
+  <main class="page-shell">
+    <section class="page-card">
+      <h1>Recovered Save</h1>
+      <table class="save-table">
+        <tr><th>name</th><td data-save-name>unknown</td></tr>
+        <tr><th>last played</th><td>after the cheerful version stopped loading</td></tr>
+        <tr><th>progress</th><td>mask complete, return incomplete</td></tr>
+        <tr><th>status</th><td>still here, not fully restored</td></tr>
+        <tr><th>autosave note</th><td>the game saved after the crisis, but before the player came back.</td></tr>
+        <tr><th>checksum</th><td>valid body, corrupted self</td></tr>
+        <tr><th>missing assets</th><td><button data-fragment-id="f29">MISSING ASSETS</button></td></tr>
+        <tr><th>recovered memories</th><td><button data-fragment-id="f11">RESET</button></td></tr>
+      </table>
+    </section>
+  </main>
+  <div class="fragment-counter" data-fragment-counter>0 / 30 fragments</div>
+  <script src="../js/storage.js"></script>
+  <script src="../js/fragments.js"></script>
+  <script src="../js/main.js"></script>
+  <script>document.querySelector("[data-save-name]").textContent = RageStore.getName() || "boy-shaped save";</script>
+</body>
+</html>
