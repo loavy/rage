@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sunny Room Games</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-static" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <button class="mascot" id="mascotButton" aria-label="Sunny Room mascot">
+        <span class="mascot-face">:)</span>
+      </button>
+      <div>
+        <h1>Sunny Room Games</h1>
+        <p>
+          tiny browser games for lunch breaks, quiet nights, and friends who
+          stay online too late
+        </p>
+      </div>
+      <button class="login-button" id="loginButton">Login</button>
+    </header>
+
+    <nav class="link-bar" aria-label="Site links">
+      <button data-open-page="home">Home</button>
+      <button data-open-page="games">Games</button>
+      <button data-open-page="news">News</button>
+      <button data-open-page="guestbook">Guestbook</button>
+    </nav>
+
+    <main class="layout">
+      <section class="notice" aria-label="Welcome">
+        <h2>Hey there!</h2>
+        <p>
+          We are rebuilding a small collection of old Flash-style games made by
+          one guy and his friends. This site is just for fun, updates,
+          screenshots, and silly notes about life after school.
+        </p>
+        <p id="normalLine">
+          Everything is normal here. The buttons work. The games are cute. The
+          creator is doing
+          <span class="quiet-word" data-fragment="1">fine</span>.
+        </p>
+      </section>
+
+      <section class="games-grid" aria-label="Game list">
+        <article class="game-card">
+          <div class="game-art park"></div>
+          <h3>Picnic Panic</h3>
+          <p>Catch sandwiches before the wind gets them.</p>
+          <button>Play</button>
+        </article>
+        <article class="game-card">
+          <div class="game-art phone"></div>
+          <h3>Message Hero</h3>
+          <p>
+            Reply fast enough and everyone
+            <span class="quiet-word" data-fragment="2">believes</span> you.
+          </p>
+          <button>Play</button>
+        </article>
+        <article class="game-card">
+          <div class="game-art room"></div>
+          <h3>Clean Room Rush</h3>
+          <p>
+            Hide the
+            <span class="quiet-word" data-fragment="3">mess</span> before your
+            friends arrive.
+          </p>
+          <button>Play</button>
+        </article>
+        <article class="game-card locked-card" id="lockedGame">
+          <div class="game-art door"></div>
+          <h3>The Meaning Machine</h3>
+          <p>Coming soon! It keeps crashing at the final question.</p>
+          <button>Wishlist</button>
+        </article>
+      </section>
+
+      <section class="posts" aria-label="Updates">
+        <article class="post">
+          <h2>New games and a tiny delay!</h2>
+          <p>
+            The next release needs more polish, more colors, and maybe a better
+            ending. Thanks to everyone who asked how I am. I always answer the
+            same way because it is
+            <span class="quiet-word" data-fragment="4">easy</span>. One friend
+            keeps saying <span class="soft-hint">vai passar</span>, like words
+            can unlock a room from the inside.
+          </p>
+          <button class="read-more">Read more</button>
+        </article>
+
+        <article class="post odd-post" id="friendsPost">
+          <h2>Friend contest winners announcement</h2>
+          <p>
+            Big thanks to everybody who sent jokes, plans, screenshots, and
+            voice notes. The winning entry is whoever
+            <span class="quiet-word" data-fragment="6">noticed</span>
+            I was lying before I did.
+          </p>
+          <ul>
+            <li>best laugh: tom</li>
+            <li>best listener: ana</li>
+            <li>best excuse: "sorry, I fell asleep"</li>
+            <li>best disappearing act: me</li>
+          </ul>
+        </article>
+
+        <article class="post">
+          <h2>Where to play?</h2>
+          <p>
+            The games are available right here. If a page looks broken, refresh
+            it. If a sentence looks too honest,
+            <span class="quiet-word" data-fragment="5">pretend</span>
+            you did not see it.
+          </p>
+          <div class="footer-links">
+            <button>Steam</button>
+            <button>Itch</button>
+            <button id="sourceButton">Source</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="posts extra-posts" aria-label="Archived notes">
+        <article class="post">
+          <h2>Screenshot pack recovered</h2>
+          <p>
+            We found old menu art, a broken school level, and one image that
+            refuses to load unless the filename is typed exactly right.
+          </p>
+        </article>
+        <article class="post">
+          <h2>Guestbook moderation</h2>
+          <p>
+            A few messages were removed because they sounded too personal for a
+            games page. The archive keeps everything anyway.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Sunny Room Games archive mirror</span>
+      <span id="archiveDust" aria-label="Archive mirror">2008</span>
+    </footer>
+
+    <dialog class="secret-dialog" id="secretDialog">
+      <button class="close-dialog" id="closeDialog" aria-label="Close">
+        x
+      </button>
+      <p class="crumb">recovered file</p>
+      <h2 id="secretTitle">Untitled</h2>
+      <p id="secretText"></p>
+    </dialog>
+
+    <dialog class="login-dialog" id="loginDialog">
+      <button class="close-dialog" id="closeLogin" aria-label="Close">x</button>
+      <h2>Member Login</h2>
+      <p class="login-copy">Only the creator can upload new builds.</p>
+      <form id="loginForm">
+        <label for="passwordInput">Password</label>
+        <div class="password-row">
+          <input id="passwordInput" type="password" autocomplete="off" />
+          <button type="submit">Enter</button>
+        </div>
+      </form>
+      <p class="login-response" id="loginResponse" aria-live="polite"></p>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>
