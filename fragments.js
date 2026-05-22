@@ -10,7 +10,7 @@
   It avoids method, gore, instruction, or romanticizing death. The horror is having to act normal afterward.
 */
 
-window.SUNNY_STATES = ["normal", "uneasy", "wrong", "hollow", "void", "underneath"];
+window.SUNNY_STATES = ["SUNNY", "WRONG", "SORE", "ORGANIC", "HOLLOW", "VOID", "UNDERNEATH"];
 
 window.SUNNY_FRAGMENTS = [
   {
@@ -36,6 +36,18 @@ window.SUNNY_FRAGMENTS = [
     location: "game buttons",
     corruptionLevel: 1,
     line: "continue was not courage, it was the only button left"
+  },
+  {
+    id: "login",
+    order: 2.5,
+    act: "Act 1: The Site",
+    visible: "LOGIN",
+    title: "account_recovery_note.txt",
+    reveal: "the password was not a word; it was how well I lied",
+    theme: "gateway",
+    location: "Login",
+    corruptionLevel: 1,
+    line: "the login page was asking for confession, not credentials"
   },
   {
     id: "score",
@@ -84,6 +96,18 @@ window.SUNNY_FRAGMENTS = [
     location: "game windows",
     corruptionLevel: 2,
     line: "something survived, but I kept waiting for it to feel like me"
+  },
+  {
+    id: "health",
+    order: 6.5,
+    act: "Act 3: The Body",
+    visible: "HEALTH",
+    title: "body_normalizer.status",
+    reveal: "the body reported normal. the boy did not",
+    theme: "body as evidence",
+    location: "Body Normalizer",
+    corruptionLevel: 3,
+    line: "normal was a costume the body learned to wear without asking me"
   },
   {
     id: "mess",
@@ -497,5 +521,40 @@ window.SUNNY_GAMES = {
       "there is no bottom element"
     ],
     response: "There is no jump button. There is only time."
+  },
+  body: {
+    title: "Body Normalizer",
+    crumb: "organic_status_panel.exe",
+    fragment: "health",
+    extraFragment: "loading",
+    buttonAfter: "Survive",
+    screen: [
+      "pulse: normal",
+      "breath: normal",
+      "voice: normal",
+      "face: normal",
+      "hunger: normal",
+      "sleep: normal",
+      "",
+      "log: normal is a costume the body learned"
+    ],
+    response: "The sliders all say normal. The interface keeps pressing outward."
   }
 };
+
+const codeHints = {
+  "Act 1: The Site": "SUNNY",
+  "Act 1: The Mask": "FINE",
+  "Act 2: The Cracks": "ROOM",
+  "Act 3: The Body": "ORGANIC",
+  "Act 3: The Room": "ROOM",
+  "Act 4: The Void": "VOID",
+  "Act 5: The Small Voice": "STILLHERE",
+  "Act 6: The Underneath": "UNDERNEATH"
+};
+
+window.SUNNY_FRAGMENTS.forEach((fragment) => {
+  fragment.sourcePage = fragment.location;
+  fragment.codeHint = fragment.codeHint || codeHints[fragment.act] || "UNDERNEATH";
+  fragment.discovered = false;
+});

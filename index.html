@@ -13,6 +13,14 @@
     <!-- the room remembers the date, but the boy does not -->
     <div class="page-static" aria-hidden="true"></div>
     <div class="idle-words" id="idleWords" aria-hidden="true"></div>
+    <div class="wall-texture" aria-hidden="true">
+      <span>everything is normal here</span>
+      <span>the room keeps the real score</span>
+      <span>do not ask why the mascot is still smiling</span>
+      <span>loading</span>
+      <span>loading</span>
+      <span>still loading</span>
+    </div>
 
     <header class="site-header">
       <button class="mascot" id="mascotButton" aria-label="Sunny Room mascot" data-fragment-trigger="mascot">
@@ -26,7 +34,7 @@
         </p>
         <p class="subtitle-shift" id="subtitleShift">everything is normal here</p>
       </div>
-      <button class="login-button" id="loginButton">Login</button>
+      <a class="login-button" id="loginButton" href="login.html" data-fragment="login">Login</a>
     </header>
 
     <nav class="link-bar" aria-label="Site links">
@@ -105,6 +113,16 @@
             <button class="secret-word" data-fragment="exit">EXIT</button>.
           </p>
           <button class="play-button" data-game="bottomless">Start</button>
+        </article>
+
+        <article class="game-card body-game-card" data-game-card="body">
+          <div class="game-art body-art" aria-hidden="true"></div>
+          <h3>Body Normalizer</h3>
+          <p>
+            Keep pulse, breath, voice, face, hunger, and sleep inside
+            <button class="secret-word" data-fragment="health">HEALTH</button>.
+          </p>
+          <button class="play-button" data-game="body">Start</button>
         </article>
       </section>
 
@@ -245,6 +263,19 @@
       </section>
     </main>
 
+    <dialog class="name-dialog" id="nameDialog">
+      <button class="close-dialog" id="skipName" aria-label="Close">x</button>
+      <h2>what should the room call you?</h2>
+      <p class="login-copy">optional. the room remembers softly.</p>
+      <form id="nameForm">
+        <label for="nameInput">name / nickname</label>
+        <div class="password-row">
+          <input id="nameInput" autocomplete="nickname" />
+          <button type="submit">save</button>
+        </div>
+      </form>
+    </dialog>
+
     <aside class="memory-dock" aria-live="polite">
       <button class="dock-tab" id="memoryTab" aria-expanded="false">memory</button>
       <span id="fragmentCounter">0/12</span>
@@ -326,6 +357,7 @@
     </section>
 
     <script src="fragments.js"></script>
+    <script src="routes.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

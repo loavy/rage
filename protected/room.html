@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Room Witness</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body class="subsite room-site" data-corruption="3">
+    <main class="subsite-shell">
+      <header class="subsite-header">
+        <p class="eyebrow">room customizer beta</p>
+        <h1>the room witness</h1>
+        <p>drag nothing. rearrange nothing. the room remembers anyway.</p>
+      </header>
+      <section class="room-map">
+        <button data-room-note="chair">chair facing the wrong way</button>
+        <button data-room-note="mirror">mirror refusing the face</button>
+        <button data-room-note="drawer">locked drawer</button>
+        <button data-room-note="window">window with no outside</button>
+      </section>
+      <p class="room-output" id="roomOutput">the room does not know you, but it recognizes looking.</p>
+      <p><a class="protected-link false-exit" href="../login.html">Back</a></p>
+    </main>
+    <script>
+      const output = document.querySelector("#roomOutput");
+      document.querySelectorAll("[data-room-note]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const notes = {
+            chair: "the chair kept the shape of someone trying to become small.",
+            mirror: "the body kept the lights on after I left.",
+            drawer: "do not show the wound. show the room built around it.",
+            window: "outside looked fake because inside had become too real."
+          };
+          output.textContent = notes[button.dataset.roomNote];
+        });
+      });
+      document.querySelector(".false-exit").addEventListener("click", (event) => {
+        if (!sessionStorage.getItem("room_false_exit")) {
+          event.preventDefault();
+          sessionStorage.setItem("room_false_exit", "true");
+          output.textContent = "Back -> Again. the room lets you rehearse leaving first.";
+        }
+      });
+    </script>
+  </body>
+</html>

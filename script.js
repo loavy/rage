@@ -2,8 +2,9 @@ const fragmentData = window.SUNNY_FRAGMENTS || [];
 const gameData = window.SUNNY_GAMES || {};
 const fragmentMap = new Map(fragmentData.map((fragment) => [fragment.id, fragment]));
 const storageKey = "sunnyRoom.fragments.v2";
+const rageFragmentKey = "rage_fragments_found";
 
-const found = new Set(JSON.parse(localStorage.getItem(storageKey) || "[]"));
+const found = new Set(JSON.parse(localStorage.getItem(rageFragmentKey) || localStorage.getItem(storageKey) || "[]"));
 let mascotClicks = Number(localStorage.getItem("sunnyRoom.mascotClicks") || "0");
 let idleTimer;
 
@@ -31,6 +32,7 @@ const idleWords = document.querySelector("#idleWords");
 const subtitleShift = document.querySelector("#subtitleShift");
 const voidPanel = document.querySelector("#voidPanel");
 const voidDescent = document.querySelector("#voidDescent");
+const nameDialog = document.querySelector("#nameDialog");
 
 const pageTitles = [
   "Sunny Room Games",
@@ -38,11 +40,14 @@ const pageTitles = [
   "Sunny Room Games is fine",
   "Sunny Room Games is still loading",
   "Sunny Room Games could not return",
+  "there is no bottom element",
   "the room underneath"
 ];
 
 function save() {
   localStorage.setItem(storageKey, JSON.stringify([...found]));
+  localStorage.setItem(rageFragmentKey, JSON.stringify([...found]));
+  localStorage.setItem("rage_corruption_level", String(corruptionLevel()));
 }
 
 function signal() {
@@ -51,10 +56,13 @@ function signal() {
 }
 
 function corruptionLevel() {
+  const unlocked = new Set(JSON.parse(localStorage.getItem("rage_unlocked_codes") || "[]"));
+  if (localStorage.getItem("rage_reached_underneath") === "true" || unlocked.has("UNDERNEATH")) return 6;
   const maxFragmentLevel = fragmentData
     .filter((fragment) => found.has(fragment.id))
     .reduce((level, fragment) => Math.max(level, fragment.corruptionLevel || 0), 0);
 
+  if (found.size >= 24) return 6;
   if (found.size >= 22) return 5;
   if (found.size >= 17) return Math.max(4, maxFragmentLevel);
   if (found.size >= 12) return Math.max(3, maxFragmentLevel);
@@ -64,12 +72,12 @@ function corruptionLevel() {
 }
 
 function updateMascot() {
-  const faces = [":)", ":|", ":/", ":.", "◌", ""];
+  const faces = [":)", ":|", ":/", ":.", "◌", "", ""];
   const index = Math.min(Math.max(corruptionLevel(), Math.floor(mascotClicks / 2)), faces.length - 1);
   mascotFace.textContent = faces[index];
   const mascot = document.querySelector("#mascotButton");
   mascot.dataset.mood = String(index);
-  mascot.title = ["happy", "tired", "forced smile", "hollow", "watching", "the smile was not the boy. it was the lock."][index];
+  mascot.title = ["happy", "strained", "tired", "sore", "hollow", "absent", "the smile was the lock. the boy was underneath."][index];
 }
 
 function updateRecoveredState() {
@@ -82,14 +90,15 @@ function updateRecoveredState() {
   document.title = pageTitles[level] || pageTitles[0];
   fragmentCounter.textContent = `${Math.min(count, totalForCounter)}/${totalForCounter}`;
   fragmentMeter.textContent = `${count} recovered`;
-  mirrorHealth.textContent = ["stable", "uneasy", "wrong", "hollow", "void", "underneath"][level];
+  mirrorHealth.textContent = ["SUNNY", "WRONG", "SORE", "ORGANIC", "HOLLOW", "VOID", "UNDERNEATH"][level];
   subtitleShift.textContent = [
     "everything is normal here",
     "the page is still smiling",
     "the buttons remember previous clicks",
     "the room is listening through the bright parts",
     "there is no bottom element",
-    "the smile was not the boy. it was the lock."
+    "the smile was not the boy. it was the lock.",
+    "the boy was underneath"
   ][level];
   if (level >= 4) console.warn("survival is not the same as being okay.");
   if (level >= 5) console.warn("the room underneath is active.");
@@ -316,8 +325,7 @@ document.querySelector("#closeVoid").addEventListener("click", () => {
 });
 
 document.querySelector("#loginButton").addEventListener("click", () => {
-  loginDialog.showModal();
-  passwordInput.focus();
+  discover("login", { open: false });
 });
 
 document.querySelector("#loginForm").addEventListener("submit", (event) => {
@@ -339,6 +347,18 @@ document.querySelector("#loginForm").addEventListener("submit", (event) => {
   loginDialog.classList.remove("wrong");
   window.requestAnimationFrame(() => loginDialog.classList.add("wrong"));
 });
+
+document.querySelector("#nameForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = document.querySelector("#nameInput").value.trim();
+  if (name) {
+    localStorage.setItem("rage_user_name", name);
+    subtitleShift.textContent = `${name}, you found a door that was pretending to be a button.`;
+  }
+  nameDialog.close();
+});
+
+document.querySelector("#skipName").addEventListener("click", () => nameDialog.close());
 
 document.querySelector("#closeDialog").addEventListener("click", () => secretDialog.close());
 document.querySelector("#closeGame").addEventListener("click", () => gameDialog.close());
@@ -369,3 +389,11 @@ console.log("survival is not the same as being okay.");
 
 updateRecoveredState();
 resetIdleTimer();
+
+if (!localStorage.getItem("rage_user_name") && !sessionStorage.getItem("rage_name_prompted")) {
+  sessionStorage.setItem("rage_name_prompted", "true");
+  window.setTimeout(() => nameDialog.showModal(), 900);
+} else if (localStorage.getItem("rage_user_name")) {
+  const name = localStorage.getItem("rage_user_name");
+  subtitleShift.textContent = `${name}, this page loaded differently because you came back.`;
+}

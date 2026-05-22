@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Organic Log</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body class="subsite body-site" data-corruption="3">
+    <main class="subsite-shell">
+      <header class="subsite-header">
+        <p class="eyebrow">organic status / all values normal</p>
+        <h1>body normalizer</h1>
+        <p>the body reported normal. the boy did not.</p>
+      </header>
+      <section class="sliders" aria-label="Body normalizer">
+        <label>pulse <input type="range" value="50" /></label>
+        <label>breath <input type="range" value="50" /></label>
+        <label>voice <input type="range" value="50" /></label>
+        <label>face <input type="range" value="50" /></label>
+        <label>hunger <input type="range" value="50" /></label>
+        <label>sleep <input type="range" value="50" /></label>
+      </section>
+      <pre class="body-log" id="bodyLog">normal is a costume the body learned.</pre>
+      <p><a class="protected-link" href="../login.html">Back</a></p>
+    </main>
+    <script>
+      const log = document.querySelector("#bodyLog");
+      document.querySelectorAll("input[type='range']").forEach((input) => {
+        input.addEventListener("input", () => {
+          log.textContent = [
+            "the page has a pulse but no heartbeat.",
+            "something under the interface keeps pressing outward.",
+            "my skin learned the shape of silence.",
+            "the screen is not bleeding; it is remembering red.",
+            "pain does not need a picture. it has architecture."
+          ][Math.floor(Math.random() * 5)];
+        });
+      });
+    </script>
+  </body>
+</html>
