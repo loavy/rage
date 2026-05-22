@@ -1,14 +1,22 @@
 :root {
+  --sunny-bg: #fff4bd;
+  --mask-yellow: #ffdc63;
+  --panic-red: #c7424b;
+  --void-black: #09090b;
+  --bruise-purple: #3b2546;
+  --cold-blue: #7fa8bd;
+  --text-faint: rgba(238, 231, 221, 0.42);
+  --corruption-level: 0;
   --page: #fff4bd;
   --paper: #fffdf0;
   --ink: #211f23;
   --muted: #686056;
   --line: #221f23;
   --blue: #3157c8;
-  --red: #c7424b;
+  --red: var(--panic-red);
   --green: #3d7b47;
   --purple: #7648a5;
-  --yellow: #ffdc63;
+  --yellow: var(--mask-yellow);
   --space-1: 0.45rem;
   --space-2: 0.8rem;
   --space-3: 1rem;
@@ -40,16 +48,50 @@ body {
   transition: background-color 240ms ease, filter 240ms ease;
 }
 
+body[data-corruption="0"] {
+  --corruption-level: 0;
+}
+
+body[data-corruption="1"] {
+  --corruption-level: 1;
+  cursor: default;
+}
+
 body[data-corruption="2"] {
+  --corruption-level: 2;
   --paper: #fff9e8;
   --shadow: 6px 6px 0 var(--line);
 }
 
-body[data-corruption="3"],
-body[data-corruption="4"] {
+body[data-corruption="3"] {
+  --corruption-level: 3;
   --page: #f7dfad;
   --paper: #fff8df;
   filter: saturate(0.92);
+}
+
+body[data-corruption="4"] {
+  --corruption-level: 4;
+  --page: #19151d;
+  --paper: #efe4c7;
+  --ink: #151216;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(127, 168, 189, 0.08), transparent 24rem),
+    linear-gradient(#1e1724, #0b0b0d 80%);
+  cursor: crosshair;
+}
+
+body[data-corruption="5"] {
+  --corruption-level: 5;
+  --page: var(--void-black);
+  --paper: #111013;
+  --ink: #eee7dd;
+  --line: #eee7dd;
+  --blue: var(--cold-blue);
+  --muted: var(--text-faint);
+  background: #050506;
+  letter-spacing: 0.02em;
+  cursor: none;
 }
 
 body.bad-signal {
@@ -88,7 +130,8 @@ a:focus-visible {
 }
 
 body.bad-signal .page-static,
-body[data-corruption="4"] .page-static {
+body[data-corruption="4"] .page-static,
+body[data-corruption="5"] .page-static {
   opacity: 1;
 }
 
@@ -120,6 +163,11 @@ body[data-corruption="4"] .page-static {
   box-shadow: var(--shadow);
   padding: var(--space-3);
   transform: rotate(-0.15deg);
+}
+
+body[data-corruption="5"] .site-header {
+  background: #0d0d10;
+  transform: translateY(8px) rotate(0.1deg);
 }
 
 .brand-copy {
@@ -172,6 +220,12 @@ body[data-corruption="4"] .page-static {
     radial-gradient(circle at 32% 34%, #222 0 5px, transparent 6px),
     radial-gradient(circle at 68% 34%, #222 0 5px, transparent 6px),
     linear-gradient(#e4d8a8, #b6a172);
+}
+
+.mascot[data-mood="5"] {
+  opacity: 0.12;
+  border-style: dashed;
+  background: transparent;
 }
 
 .mascot-face {
@@ -339,6 +393,20 @@ li {
     linear-gradient(90deg, #2e2b2f 0 12%, #75472f 13% 80%, #2e2b2f 81%);
 }
 
+.void-art {
+  background:
+    radial-gradient(circle at 50% 62%, rgba(238, 231, 221, 0.18) 0 2px, transparent 3px),
+    linear-gradient(#0c0c0f, #000);
+}
+
+.hidden-runner {
+  display: none;
+}
+
+.hidden-runner.visible {
+  display: grid;
+}
+
 .locked-card {
   filter: saturate(0.7);
 }
@@ -422,6 +490,11 @@ li {
 
 .secret-word.recovered {
   color: var(--red);
+}
+
+body[data-corruption="4"] .secret-word,
+body[data-corruption="5"] .secret-word {
+  text-shadow: 0 0 10px rgba(199, 66, 75, 0.35);
 }
 
 .memory-dock {
@@ -596,8 +669,103 @@ body[data-corruption="4"] .site-header h1::after {
 }
 
 body[data-corruption="4"] .game-card,
-body[data-corruption="4"] .post {
+body[data-corruption="4"] .post,
+body[data-corruption="5"] .game-card,
+body[data-corruption="5"] .post {
   box-shadow: 7px 7px 0 #111;
+}
+
+body[data-corruption="5"] .notice,
+body[data-corruption="5"] .post,
+body[data-corruption="5"] .game-card,
+body[data-corruption="5"] .bug-report {
+  border-style: dashed;
+  background: rgba(17, 16, 19, 0.94);
+}
+
+body[data-corruption="5"] .site-header h1 {
+  color: #eee7dd;
+  text-shadow: 0 0 18px rgba(238, 231, 221, 0.25);
+}
+
+body[data-corruption="5"] .mascot::after {
+  content: "the smile was not the boy. it was the lock.";
+  display: block;
+  width: 13rem;
+  margin-left: 7rem;
+  color: var(--text-faint);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.void-button {
+  display: inline-block;
+  margin: var(--space-2) var(--space-2) var(--space-2) 0;
+  min-height: 2.35rem;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: #09090b;
+  color: #eee7dd;
+  padding: 0 var(--space-2);
+  font-weight: 800;
+}
+
+.void-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: auto;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0), #000 22rem),
+    #030304;
+  color: #eee7dd;
+}
+
+.void-close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  background: #08080a;
+  color: #eee7dd;
+  border-color: #eee7dd;
+}
+
+.void-descent {
+  width: min(780px, calc(100% - 2rem));
+  min-height: 360vh;
+  margin: 0 auto;
+  padding: 18vh 0 80vh;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.void-descent h2 {
+  color: #eee7dd;
+  margin-bottom: 25vh;
+}
+
+.void-descent p {
+  max-width: 34rem;
+  margin: 0 0 42vh;
+  color: rgba(238, 231, 221, 0.68);
+  line-height: 2;
+}
+
+.void-descent p:nth-child(even) {
+  margin-left: auto;
+  color: rgba(238, 231, 221, 0.45);
+}
+
+.delayed-line {
+  opacity: 0;
+  animation: delayedVoid 7s ease forwards;
+}
+
+@keyframes delayedVoid {
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes badSignal {

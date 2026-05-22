@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-corruption="0">
-    <!-- mirror note: the cute layer loads first because people trust bright colors. -->
-    <!-- if someone asks, this is only a games site. if someone stays, tell them less slowly. -->
+    <!-- he changed this line because the first version was too honest -->
+    <!-- do not put the real sentence on the page -->
+    <!-- if they find this, maybe they were listening -->
+    <!-- the room remembers the date, but the boy does not -->
     <div class="page-static" aria-hidden="true"></div>
     <div class="idle-words" id="idleWords" aria-hidden="true"></div>
 
@@ -22,6 +24,7 @@
         <p>
           tiny browser games for lunch breaks, quiet nights, and friends who stay online too late
         </p>
+        <p class="subtitle-shift" id="subtitleShift">everything is normal here</p>
       </div>
       <button class="login-button" id="loginButton">Login</button>
     </header>
@@ -92,6 +95,16 @@
             <button class="secret-word" data-fragment="question">final question</button>.
           </p>
           <button class="play-button" data-game="meaning" id="meaningButton">Wishlist</button>
+        </article>
+
+        <article class="game-card hidden-runner" data-game-card="bottomless">
+          <div class="game-art void-art" aria-hidden="true"></div>
+          <h3>Bottomless Runner</h3>
+          <p>
+            A running game with no floor, no score, and no
+            <button class="secret-word" data-fragment="exit">EXIT</button>.
+          </p>
+          <button class="play-button" data-game="bottomless">Start</button>
         </article>
       </section>
 
@@ -206,6 +219,14 @@
             <button class="secret-word" data-fragment="silence">silence</button>.
           </p>
         </article>
+        <article class="post">
+          <p class="post-meta">FAQ</p>
+          <h2>Why does the site still say Sunny?</h2>
+          <p>
+            The word <button class="secret-word" data-fragment="sunny">Sunny</button>
+            was chosen for branding reasons. Please do not ask what the room looked like without it.
+          </p>
+        </article>
       </section>
 
       <section class="bug-report" id="bug" aria-labelledby="bug-title">
@@ -271,19 +292,36 @@
         <h2 id="panelTitle">the room underneath</h2>
         <div class="assembled-poem" id="assembledPoem"></div>
         <div class="final-room" id="finalRoom" hidden>
-          <h3>the room underneath</h3>
+          <h3>THE ROOM UNDERNEATH</h3>
           <p>
-            I learned to sound alive before I learned to be honest.
-            I made games because games forgive rules that people do not.
-            The mascot smiled for me, the patch notes talked for me, the room kept every word I deleted.
+            I survived something I still cannot explain without leaving my own body.
+            People asked why, and I hated them for asking, and hated myself because I was asking too.
+            I was ashamed of being alive. I was ashamed of almost not being. I was ashamed that the room knew before anyone else.
           </p>
           <p>
-            I am tired. I am confused. I do not know if meaning is found, built, borrowed, or waited for.
-            But tonight the door is not locked from the outside. Maybe I can let one person see the room.
-            Maybe staying one more day is not a victory screen. Maybe it is enough light to save the file.
+            I do not know if I wanted to live. I know I wanted the falling to stop.
+            The void did not become beautiful. It did not become meaningful. It only kept opening underneath every normal sentence.
           </p>
+          <p>
+            Tonight, if the floor does not come, maybe a voice can.
+            Maybe that is not hope. Maybe it is enough to not fall alone.
+          </p>
+          <button class="void-button" id="openVoid">open the void underneath</button>
           <a class="protected-link" href="protected/room-log.html">open room-log</a>
         </div>
+      </div>
+    </section>
+
+    <section class="void-panel" id="voidPanel" aria-labelledby="voidTitle" hidden>
+      <button class="close-dialog void-close" id="closeVoid" aria-label="Close">x</button>
+      <div class="void-descent" id="voidDescent">
+        <h2 id="voidTitle">the void underneath</h2>
+        <p>i thought the bottom would explain the fall</p>
+        <p>i thought the bottom would forgive the fall</p>
+        <p>i thought the bottom would become a floor</p>
+        <p>there was no bottom</p>
+        <p>there was only more falling</p>
+        <p class="delayed-line">and then, very far away, someone said my name like a hand on a door</p>
       </div>
     </section>
 

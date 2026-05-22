@@ -28,6 +28,18 @@ const assembledPoem = document.querySelector("#assembledPoem");
 const finalRoom = document.querySelector("#finalRoom");
 const mascotFace = document.querySelector("#mascotFace");
 const idleWords = document.querySelector("#idleWords");
+const subtitleShift = document.querySelector("#subtitleShift");
+const voidPanel = document.querySelector("#voidPanel");
+const voidDescent = document.querySelector("#voidDescent");
+
+const pageTitles = [
+  "Sunny Room Games",
+  "Sunny Room Games :)",
+  "Sunny Room Games is fine",
+  "Sunny Room Games is still loading",
+  "Sunny Room Games could not return",
+  "the room underneath"
+];
 
 function save() {
   localStorage.setItem(storageKey, JSON.stringify([...found]));
@@ -39,29 +51,48 @@ function signal() {
 }
 
 function corruptionLevel() {
-  if (found.size >= 18) return 4;
-  if (found.size >= 12) return 3;
-  if (found.size >= 7) return 2;
-  if (found.size >= 3) return 1;
+  const maxFragmentLevel = fragmentData
+    .filter((fragment) => found.has(fragment.id))
+    .reduce((level, fragment) => Math.max(level, fragment.corruptionLevel || 0), 0);
+
+  if (found.size >= 22) return 5;
+  if (found.size >= 17) return Math.max(4, maxFragmentLevel);
+  if (found.size >= 12) return Math.max(3, maxFragmentLevel);
+  if (found.size >= 7) return Math.max(2, maxFragmentLevel);
+  if (found.size >= 3) return Math.max(1, maxFragmentLevel);
   return 0;
 }
 
 function updateMascot() {
-  const faces = [":)", ":|", ":/", ":.", " "];
-  const index = Math.min(Math.floor(mascotClicks / 2), faces.length - 1);
+  const faces = [":)", ":|", ":/", ":.", "◌", ""];
+  const index = Math.min(Math.max(corruptionLevel(), Math.floor(mascotClicks / 2)), faces.length - 1);
   mascotFace.textContent = faces[index];
-  document.querySelector("#mascotButton").dataset.mood = String(index);
+  const mascot = document.querySelector("#mascotButton");
+  mascot.dataset.mood = String(index);
+  mascot.title = ["happy", "tired", "forced smile", "hollow", "watching", "the smile was not the boy. it was the lock."][index];
 }
 
 function updateRecoveredState() {
   const count = found.size;
-  const totalForCounter = 12;
+  const totalForCounter = 18;
   const level = corruptionLevel();
 
   body.dataset.corruption = String(level);
+  body.dataset.state = (window.SUNNY_STATES || [])[level] || "normal";
+  document.title = pageTitles[level] || pageTitles[0];
   fragmentCounter.textContent = `${Math.min(count, totalForCounter)}/${totalForCounter}`;
   fragmentMeter.textContent = `${count} recovered`;
-  mirrorHealth.textContent = ["stable", "odd", "drifting", "corrupted", "listening"][level];
+  mirrorHealth.textContent = ["stable", "uneasy", "wrong", "hollow", "void", "underneath"][level];
+  subtitleShift.textContent = [
+    "everything is normal here",
+    "the page is still smiling",
+    "the buttons remember previous clicks",
+    "the room is listening through the bright parts",
+    "there is no bottom element",
+    "the smile was not the boy. it was the lock."
+  ][level];
+  if (level >= 4) console.warn("survival is not the same as being okay.");
+  if (level >= 5) console.warn("the room underneath is active.");
 
   fragmentData.forEach((fragment) => {
     document.querySelectorAll(`[data-fragment="${fragment.id}"], [data-fragment-trigger="${fragment.id}"]`).forEach((node) => {
@@ -71,6 +102,14 @@ function updateRecoveredState() {
 
   document.querySelector("#meaningButton").textContent = found.size >= 8 ? "Run" : "Wishlist";
   document.querySelector("[data-game-card='meaning']").classList.toggle("unlocked", found.size >= 8);
+  document.querySelector("[data-game-card='bottomless']").classList.toggle("visible", found.size >= 12);
+  document.querySelectorAll(".play-button").forEach((button) => {
+    if (button.dataset.game === "meaning" && found.size < 8) return;
+    const game = gameData[button.dataset.game];
+    if (game?.buttonAfter && found.has(game.fragment)) button.textContent = game.buttonAfter;
+    else if (button.dataset.game === "bottomless") button.textContent = "Start";
+    else if (button.dataset.game !== "meaning") button.textContent = level >= 3 ? "Continue" : "Play";
+  });
   buildPoem();
 
   if (found.size >= 8) {
@@ -78,7 +117,8 @@ function updateRecoveredState() {
     document.querySelector("#memoryTab").setAttribute("aria-expanded", "true");
   }
 
-  finalRoom.hidden = found.size < 12;
+  finalRoom.hidden = found.size < 18;
+  document.querySelector("#openVoid").hidden = found.size < 18;
   updateMascot();
 }
 
@@ -93,7 +133,8 @@ function discover(id, options = {}) {
 
   if (isNew) {
     signal();
-    console.info(`[sunny-room] recovered ${fragment.id}: ${fragment.theme}`);
+    console.info(`[sunny-room] fragment recovered: ${fragment.reveal}`);
+    if (fragment.corruptionLevel >= 4) console.warn("there is no bottom element.");
   }
 
   if (options.open !== false) {
@@ -129,7 +170,8 @@ function openGame(gameId) {
       "required: 8 recovered files",
       "current: " + found.size,
       "",
-      "the machine refuses to answer a question asked alone"
+      "the machine refuses to answer a question asked alone",
+      "button label changed: Wishlist -> Not yet"
     ].map((line) => `<code>${line || "&nbsp;"}</code>`).join("");
     gameResponse.textContent = "The door shakes, but it does not open yet.";
     gameDialog.showModal();
@@ -142,7 +184,9 @@ function openGame(gameId) {
   gameScreen.innerHTML = game.screen.map((line) => `<code>${line || "&nbsp;"}</code>`).join("");
   gameResponse.textContent = game.response;
   gameDialog.showModal();
+  discover("loading", { open: false });
   discover(game.fragment, { open: false });
+  if (game.extraFragment) discover(game.extraFragment, { open: false });
 }
 
 function showSecretPanel() {
@@ -202,6 +246,23 @@ document.querySelector("#mascotButton").addEventListener("click", () => {
   localStorage.setItem("sunnyRoom.mascotClicks", String(mascotClicks));
   updateMascot();
   if (mascotClicks >= 3) discover("mascot", { open: mascotClicks === 3 });
+  if (mascotClicks >= 8) {
+    gameCrumb.textContent = "sunny_face_rig.txt";
+    gameTitle.textContent = "Mascot";
+    gameScreen.innerHTML = [
+      "please stop making me perform.",
+      "",
+      "smile rig: locked",
+      "boy: not found",
+      "mask layer: active"
+    ].map((line) => `<code>${line || "&nbsp;"}</code>`).join("");
+    gameResponse.textContent = "It keeps smiling after the room goes quiet.";
+    gameDialog.showModal();
+  }
+});
+
+document.querySelector("#mascotButton").addEventListener("mouseenter", () => {
+  if (corruptionLevel() >= 3) subtitleShift.textContent = "the site is watching you notice it";
 });
 
 document.querySelector("#sourceButton").addEventListener("click", () => {
@@ -228,6 +289,8 @@ document.querySelector("#memoryTab").addEventListener("click", () => {
 });
 
 document.querySelector("#resetMemory").addEventListener("click", () => {
+  const confirmed = window.confirm("Are you sure? The room forgets slower than you do.");
+  if (!confirmed) return;
   found.clear();
   save();
   localStorage.removeItem("sunnyRoom.mascotClicks");
@@ -235,6 +298,21 @@ document.querySelector("#resetMemory").addEventListener("click", () => {
   hideSecretPanel();
   updateRecoveredState();
   signal();
+});
+
+document.querySelector("#openVoid").addEventListener("click", () => {
+  voidPanel.hidden = false;
+  discover("void", { open: false });
+  window.setTimeout(() => {
+    voidDescent.insertAdjacentHTML("beforeend", "<p>i thought scrolling would count as leaving</p>");
+  }, 1600);
+  window.setTimeout(() => {
+    voidDescent.insertAdjacentHTML("beforeend", "<p>the page kept making more down</p>");
+  }, 3600);
+});
+
+document.querySelector("#closeVoid").addEventListener("click", () => {
+  voidPanel.hidden = true;
 });
 
 document.querySelector("#loginButton").addEventListener("click", () => {
@@ -283,10 +361,11 @@ document.addEventListener("keydown", (event) => {
   document.addEventListener(eventName, resetIdleTimer, { passive: true });
 });
 
-console.log("%cSunny Room Games", "color:#3555c7;font-weight:bold");
-console.log("everything is normal here");
-console.log("the room saves what the mouth deletes");
-console.log("try not to inspect the smile too long");
+console.log("%csunny room games loaded successfully.", "color:#3555c7;font-weight:bold");
+console.log("mask layer active.");
+console.log("user is looking too closely.");
+console.log("do not inspect the room unless you are ready to be seen.");
+console.log("survival is not the same as being okay.");
 
 updateRecoveredState();
 resetIdleTimer();
